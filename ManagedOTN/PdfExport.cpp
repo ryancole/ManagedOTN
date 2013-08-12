@@ -8,21 +8,6 @@ using namespace System::Runtime::InteropServices;
 
 namespace ManagedOTN
 {
-    bool PdfExport::SetFontDirectory(int handle, String^ path)
-    {
-        IntPtr p = Marshal::StringToHGlobalAnsi(path);
-        char* z = static_cast<char*>(p.ToPointer());
-
-        this->lastErrorCode = DASetOption(handle, SCCOPT_FONTDIRECTORY, (VTLPVOID)z, sizeof(char) * path->Length);
-
-        Marshal::FreeHGlobal(p);
-
-        if (this->lastErrorCode != DAERR_OK)
-            return false;
-
-        return true;
-    }
-
     bool PdfExport::Initialize()
     {
         this->lastErrorCode = DAInitEx(DATHREAD_INIT_NATIVETHREADS, OI_INIT_DEFAULT | OI_INIT_NOLOADOPTIONS | OI_INIT_NOSAVEOPTIONS);
@@ -87,6 +72,12 @@ namespace ManagedOTN
         if (this->lastErrorCode != DAERR_OK)
             return 0;
 
+        if (documentHandle > 0)
+        {
+            // set document options
+            this->SetOptions(documentHandle);
+        }
+
         return (int)documentHandle;
     }
 
@@ -110,5 +101,47 @@ namespace ManagedOTN
     int PdfExport::GetLastErrorCode()
     {
         return this->lastErrorCode;
+    }
+
+    bool PdfExport::Convert(String^ source, String^ destination)
+    {
+        bool result = false;
+
+        if (this->Initialize())
+        {
+            int documentHandle = this->OpenDocument(source);
+
+            if (documentHandle > 0)
+            {
+                int exportHandle = this->OpenExport(documentHandle, destination);
+
+                if (exportHandle > 0)
+                {
+                    if (this->RunExport(exportHandle))
+                    {
+                        result = true;
+                    }
+
+                    this->CloseExport(exportHandle);
+                }
+
+                this->CloseDocument(documentHandle);
+            }
+
+            this->DeInitialize();
+        }
+
+        return result;
+    }
+
+    void PdfExport::SetOptions(int handle)
+    {
+        IntPtr p = Marshal::StringToHGlobalAnsi(this->FontDirectory);
+        char* z = static_cast<char*>(p.ToPointer());
+
+        // set font directory
+        this->lastErrorCode = DASetOption(handle, SCCOPT_FONTDIRECTORY, (VTLPVOID)z, sizeof(char) * this->FontDirectory->Length);
+
+        Marshal::FreeHGlobal(p);
     }
 }
