@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset='utf-8'>
+    <meta http-equiv="X-UA-Compatible" content="chrome=1">
+    <link href='https://fonts.googleapis.com/css?family=Chivo:900' rel='stylesheet' type='text/css'>
+    <link rel="stylesheet" type="text/css" href="stylesheets/stylesheet.css" media="screen" />
+    <link rel="stylesheet" type="text/css" href="stylesheets/pygment_trac.css" media="screen" />
+    <link rel="stylesheet" type="text/css" href="stylesheets/print.css" media="print" />
+    <!--[if lt IE 9]>
+    <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <title>ManagedOTN by ryancole</title>
+  </head>
+
+  <body>
+    <div id="container">
+      <div class="inner">
+
+        <header>
+          <h1>ManagedOTN</h1>
+          <h2>A C++/CLI wrapper around Oracle's Outside-In libraries.</h2>
+        </header>
+
+        <section id="downloads" class="clearfix">
+          <a href="https://github.com/ryancole/ManagedOTN/zipball/master" id="download-zip" class="button"><span>Download .zip</span></a>
+          <a href="https://github.com/ryancole/ManagedOTN/tarball/master" id="download-tar-gz" class="button"><span>Download .tar.gz</span></a>
+          <a href="https://github.com/ryancole/ManagedOTN" id="view-on-github" class="button"><span>View on GitHub</span></a>
+        </section>
+
+        <hr>
+
+        <section id="main_content">
+          <p>ManagedOTN provides a C++/CLI wrapper around Oracle's <a href="http://www.oracle.com/us/technologies/embedded/025613.htm">Outside-In</a> libraries.</p>
+
+<p><img src="http://i.imgur.com/U33qoR2.png" alt="Godzilla" title="Godzilla"></p>
+
+<h2>
+<a name="compiling" class="anchor" href="#compiling"><span class="octicon octicon-link"></span></a>Compiling</h2>
+
+<p>Compiling ManagedOTN requires that you can link to the Outside In libraries, and include their headers. You can download their various products, for free, from <a href="http://www.oracle.com/technetwork/middleware/content-management/downloads/oit-dl-otn-097435.html">their website</a>. Once downloaded, you need to add <code>sccda.lib</code> and <code>sccex.lib</code> as additional linker input dependencies within the ManagedOTN project. You also need to add the <code>sdk\common</code> directory, within the Outside In directory, to the ManagedOTN project's list of additional include directories. With these settings in place, and .NET 4.5 installed, you should be able to compile and run the included C# application, ManagedOTNTest.</p>
+
+<h2>
+<a name="example" class="anchor" href="#example"><span class="octicon octicon-link"></span></a>Example</h2>
+
+<div class="highlight"><pre><span class="kt">var</span> <span class="n">exporter</span> <span class="p">=</span> <span class="k">new</span> <span class="n">PdfExport</span><span class="p">();</span>
+
+<span class="k">if</span> <span class="p">(!</span><span class="n">exporter</span><span class="p">.</span><span class="n">Convert</span><span class="p">(</span><span class="s">@"foo.xls"</span><span class="p">,</span> <span class="s">@"foo.pdf"</span><span class="p">))</span>
+<span class="p">{</span>
+    <span class="kt">int</span> <span class="n">error</span> <span class="p">=</span> <span class="n">exporter</span><span class="p">.</span><span class="n">GetLastErrorCode</span><span class="p">();</span>
+    <span class="n">Console</span><span class="p">.</span><span class="n">WriteLine</span><span class="p">(</span><span class="n">exporter</span><span class="p">.</span><span class="n">GetErrorMessage</span><span class="p">(</span><span class="n">error</span><span class="p">));</span>
+<span class="p">}</span>
+</pre></div>
+
+<h2>
+<a name="managedotnpdfexport-methods" class="anchor" href="#managedotnpdfexport-methods"><span class="octicon octicon-link"></span></a>ManagedOTN::PdfExport Methods</h2>
+
+<h3>
+<a name="bool-convertstring-source-string-destination" class="anchor" href="#bool-convertstring-source-string-destination"><span class="octicon octicon-link"></span></a>bool Convert(string source, string destination)</h3>
+
+<p>The <code>Convert</code> function is a convenience method that encapsulates the complete conversion process. It makes calls to the other functions provided by <code>PdfExport</code>. The function takes a <code>source</code> parameter, converts it to a PDF document and finally saves it to the <code>destination</code> path. <code>Convert</code> returns a boolean indicating success (<code>true</code>) or failure (<code>false</code>).</p>
+
+<p>When using the <code>Convert</code> function, it is not necessary to call any of the other functions, such as <code>Initialize</code> or <code>DeInitialize</code>.</p>
+
+<h3>
+<a name="bool-initialize" class="anchor" href="#bool-initialize"><span class="octicon octicon-link"></span></a>bool Initialize()</h3>
+
+<p>The <code>Initialize</code> function simply initializes the underlying Outside In engine. It returns a boolean indicating success (<code>true</code>) or failure (<code>false</code>). <code>Initialize</code> must be called before making calls to any subsequent <code>PdfExport</code> functions, unless you're using the <code>Convert</code> function.</p>
+
+<h3>
+<a name="bool-deinitialize" class="anchor" href="#bool-deinitialize"><span class="octicon octicon-link"></span></a>bool DeInitialize()</h3>
+
+<p>The <code>DeInitialize</code> function cleans up and disposes of the underyling Outside In engine. It returns a boolean indicating success (<code>true</code>) or failure (<code>false</code>). <code>DeInitialie</code> must be called when the <code>PdfExport</code> is no longer needed, unless you're using the <code>Convert</code> function.</p>
+
+<h3>
+<a name="int-opendocumentstring-path" class="anchor" href="#int-opendocumentstring-path"><span class="octicon octicon-link"></span></a>int OpenDocument(string path)</h3>
+
+<p>The <code>OpenDocument</code> function opens the source document for reading. A source document must be opened before you can export a PDF. <code>OpenDocument</code> returns an integer indicating the opened document's handle. The document handle is used by other functions, such as <code>OpenExport</code>. The document handle will have a positive value if the <code>OpenDocument</code> function succeeded, otherwise the returned document handle will be zero.</p>
+
+<h3>
+<a name="bool-closedocumentint-handle" class="anchor" href="#bool-closedocumentint-handle"><span class="octicon octicon-link"></span></a>bool CloseDocument(int handle)</h3>
+
+<p>The <code>CloseDocument</code> function closes an open document for the given <code>handle</code>. It returns a boolean indicating success (<code>true</code>) or failure (<code>false</code>). You must close documents when you are finished with them.</p>
+
+<h3>
+<a name="int-openexportint-handle-string-path" class="anchor" href="#int-openexportint-handle-string-path"><span class="octicon octicon-link"></span></a>int OpenExport(int handle, string path)</h3>
+
+<p>The <code>OpenExport</code> function, given an open document <code>handle</code>, opens the output destination file, at <code>path</code>, for writing. A destination document must be opened before you can export a PDF. <code>OpenExport</code> returns an integer indicating the opened export's handle. The export handle is used by the <code>RunExport</code> function. The export handle will have a positive value if the <code>OpenExport</code> function succeeded, otherwise the returned export handle will be zero.</p>
+
+<h3>
+<a name="bool-closeexportint-handle" class="anchor" href="#bool-closeexportint-handle"><span class="octicon octicon-link"></span></a>bool CloseExport(int handle)</h3>
+
+<p>The <code>CloseExport</code> function closes an open export for the given <code>handle</code>. It returns a boolean indicating success (<code>true</code>) or failure (<code>false</code>). You must close exports when you are finished with them.</p>
+
+<h3>
+<a name="bool-runexportint-handle" class="anchor" href="#bool-runexportint-handle"><span class="octicon octicon-link"></span></a>bool RunExport(int handle)</h3>
+
+<p>The <code>RunExport</code> function, given an open export <code>handle</code>, will export a PDF of the opened document for the given export <code>handle</code>. It returns a boolean indicating success (<code>true</code>) or failure (<code>false</code>).</p>
+
+<h3>
+<a name="int-getlasterrorcode" class="anchor" href="#int-getlasterrorcode"><span class="octicon octicon-link"></span></a>int GetLastErrorCode()</h3>
+
+<p>Returns an integer containing the last error code. So if another function fails, this code should reflect the error that occurred.</p>
+
+<h3>
+<a name="string-geterrormessageint-code" class="anchor" href="#string-geterrormessageint-code"><span class="octicon octicon-link"></span></a>string GetErrorMessage(int code)</h3>
+
+<p>Convert a given error <code>code</code> to an actual error message.</p>
+
+<h2>
+<a name="managedotnpdfexport-properties" class="anchor" href="#managedotnpdfexport-properties"><span class="octicon octicon-link"></span></a>ManagedOTN::PdfExport Properties</h2>
+
+<h3>
+<a name="string-fontdirectory" class="anchor" href="#string-fontdirectory"><span class="octicon octicon-link"></span></a>string FontDirectory</h3>
+
+<p>Gets and sets the directory in which the desired font files are located. This defaults to the system-defined fonts directory.</p>
+        </section>
+
+        <footer>
+          ManagedOTN is maintained by <a href="https://github.com/ryancole">ryancole</a><br>
+          This page was generated by <a href="http://pages.github.com">GitHub Pages</a>. Tactile theme by <a href="https://twitter.com/jasonlong">Jason Long</a>.
+        </footer>
+
+        
+      </div>
+    </div>
+  </body>
+</html>
