@@ -18,7 +18,7 @@ if (!exporter.Convert(@"foo.xls", @"foo.pdf"))
 }
 ```
 
-## ManagedOTN::PdfExport
+## ManagedOTN::PdfExport Methods
 
 ### bool Convert(string source, string destination)
 
@@ -61,3 +61,9 @@ Returns an integer containing the last error code. So if another function fails,
 ### string GetErrorMessage(int code)
 
 Convert a given error `code` to an actual error message.
+
+## ManagedOTN::PdfExport Properties
+
+### string FontDirectory
+
+Gets and sets the directory in which the desired font files are located. This defaults to the system-defined fonts directory.
