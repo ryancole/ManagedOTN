@@ -41,3 +41,23 @@ The `OpenDocument` function opens the source document for reading. A source docu
 ### bool CloseDocument(int handle)
 
 The `CloseDocument` function closes an open document for the given `handle`. It returns a boolean indicating success (`true`) or failure (`false`). You must close documents when you are finished with them.
+
+### int OpenExport(int handle, string path)
+
+The `OpenExport` function, given an open document `handle`, opens the output destination file, at `path`, for writing. A destination document must be opened before you can export a PDF. `OpenExport` returns an integer indicating the opened export's handle. The export handle is used by the `RunExport` function. The export handle will have a positive value if the `OpenExport` function succeeded, otherwise the returned export handle will be zero.
+
+### bool CloseExport(int handle)
+
+The `CloseExport` function closes an open export for the given `handle`. It returns a boolean indicating success (`true`) or failure (`false`). You must close exports when you are finished with them.
+
+### bool RunExport(int handle)
+
+The `RunExport` function, given an open export `handle`, will export a PDF of the opened document for the given export `handle`. It returns a boolean indicating success (`true`) or failure (`false`).
+
+### int GetLastErrorCode()
+
+Returns an integer containing the last error code. So if another function fails, this code should reflect the error that occurred.
+
+### string GetErrorMessage(int code)
+
+Convert a given error `code` to an actual error message.
