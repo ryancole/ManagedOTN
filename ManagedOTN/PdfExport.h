@@ -1,5 +1,7 @@
 #include <Windows.h>
 
+using namespace System;
+
 namespace ManagedOTN
 {
     public ref class PdfExport
@@ -15,18 +17,18 @@ namespace ManagedOTN
         public:
 
             // public methods
-            bool Convert(System::String^ source, System::String^ destination);
+            bool Convert(String^ source, String^ destination);
             bool RunExport(int handle);
             bool Initialize();
             bool CloseExport(int handle);
             bool DeInitialize();
             bool CloseDocument(int handle);
-            int OpenExport(int handle, System::String^ path);
+            int OpenExport(int handle, String^ path);
             int GetLastErrorCode();
-            int OpenDocument(System::String^ path);
-            System::String^ GetErrorMessage(int code);
+            int OpenDocument(String^ path);
+            String^ GetErrorMessage(int code);
 
             // public properties
-            property System::String^ FontDirectory;
+            property String^ FontDirectory;
     };
 }
