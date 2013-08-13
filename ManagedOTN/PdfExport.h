@@ -10,20 +10,21 @@ namespace ManagedOTN
             int lastErrorCode;
 
             // private methods
-            void SetOptions(int handle);
+            void ApplyOptions(int handle);
 
         public:
 
             // public methods
+            bool Convert(System::String^ source, System::String^ destination);
+            bool RunExport(int handle);
             bool Initialize();
+            bool CloseExport(int handle);
             bool DeInitialize();
             bool CloseDocument(int handle);
-            bool CloseExport(int handle);
-            bool RunExport(int handle);
-            int OpenDocument(System::String^ path);
             int OpenExport(int handle, System::String^ path);
             int GetLastErrorCode();
-            bool Convert(System::String^ source, System::String^ destination);
+            int OpenDocument(System::String^ path);
+            System::String^ GetErrorMessage(int code);
 
             // public properties
             property System::String^ FontDirectory;

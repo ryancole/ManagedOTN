@@ -75,7 +75,7 @@ namespace ManagedOTN
         if (documentHandle > 0)
         {
             // set document options
-            this->SetOptions(documentHandle);
+            this->ApplyOptions(documentHandle);
         }
 
         return (int)documentHandle;
@@ -134,14 +134,40 @@ namespace ManagedOTN
         return result;
     }
 
-    void PdfExport::SetOptions(int handle)
+    void PdfExport::ApplyOptions(int handle)
     {
-        IntPtr p = Marshal::StringToHGlobalAnsi(this->FontDirectory);
-        char* z = static_cast<char*>(p.ToPointer());
+        if (this->FontDirectory == nullptr || this->FontDirectory->Length > 0)
+        {
+            String^ directory = Environment::GetFolderPath(Environment::SpecialFolder::Fonts);
 
-        // set font directory
-        this->lastErrorCode = DASetOption(handle, SCCOPT_FONTDIRECTORY, (VTLPVOID)z, sizeof(char) * this->FontDirectory->Length);
+            // if no directory set, default to system-defined directory
+            IntPtr p = Marshal::StringToHGlobalAnsi(directory);
+            char* z = static_cast<char*>(p.ToPointer());
 
-        Marshal::FreeHGlobal(p);
+            this->lastErrorCode = DASetOption(handle, SCCOPT_FONTDIRECTORY, (VTLPVOID)z, sizeof(char) * directory->Length);
+
+            Marshal::FreeHGlobal(p);
+        }
+        else
+        {
+            // set to user-defined directory
+            IntPtr p = Marshal::StringToHGlobalAnsi(this->FontDirectory);
+            char* z = static_cast<char*>(p.ToPointer());
+
+            // set font directory
+            this->lastErrorCode = DASetOption(handle, SCCOPT_FONTDIRECTORY, (VTLPVOID)z, sizeof(char) * this->FontDirectory->Length);
+
+            Marshal::FreeHGlobal(p);
+        }
+    }
+
+    String^ PdfExport::GetErrorMessage(int code)
+    {
+        char buffer[256];
+
+        // get the message for the given error code
+        DAGetErrorString(code, &buffer, 256);
+
+        return gcnew String(buffer);
     }
 }

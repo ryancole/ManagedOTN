@@ -9,17 +9,10 @@ namespace ManagedOTNTest
         {
             var exporter = new PdfExport();
 
-            // set options
-            exporter.FontDirectory = Environment.GetFolderPath(Environment.SpecialFolder.Fonts);
-
-            // convert document
-            if (exporter.Convert(@"E:\Documents\Backup\foo.txt", @"c:\users\ryan\desktop\foo.pdf"))
+            if (!exporter.Convert(@"E:\Documents\Backup\foo.txt", @"c:\users\ryan\desktop\foo.pdf"))
             {
-                Console.WriteLine("good");
-            }
-            else
-            {
-                Console.WriteLine(exporter.GetLastErrorCode());
+                int code = exporter.GetLastErrorCode();
+                Console.WriteLine(exporter.GetErrorMessage(code));
             }
         }
     }
