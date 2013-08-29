@@ -136,6 +136,39 @@ namespace ManagedOTN
 
     void PdfExport::ApplyOptions(int handle)
     {
+        if (this->EnableWatermark == true)
+        {
+            bool toggle = true;
+            this->lastErrorCode = DASetOption(handle, SCCOPT_ENABLEWATERMARK, &toggle, sizeof(bool));
+
+            if (this->WatermarkImagePath != nullptr && this->WatermarkImagePath->Length > 0)
+            {
+                // set user-defined watermark path
+                IntPtr p = Marshal::StringToHGlobalAnsi(this->WatermarkImagePath);
+                char* z = static_cast<char*>(p.ToPointer());
+
+                WATERMARKIO wio = {};
+                WATERMARKPATH wpath = {};
+
+                // set watermark path
+                wpath.dwMaxSize = SCCUT_FILENAMEMAX;
+                strncpy_s(wpath.szWaterMarkPath, z, SCCUT_FILENAMEMAX);
+
+                // set io structure
+                wio.Path = wpath;
+                wio.dwType = IOTYPE_ANSIPATH;
+
+                this->lastErrorCode = DASetOption(handle, SCCOPT_WATERMARKIO, &wio, sizeof(WATERMARKIO));
+
+                Marshal::FreeHGlobal(p);
+            }
+        }
+        else
+        {
+            bool toggle = false;
+            this->lastErrorCode = DASetOption(handle, SCCOPT_ENABLEWATERMARK, &toggle, sizeof(bool));
+        }
+
         if (this->FontDirectory == nullptr || this->FontDirectory->Length > 0)
         {
             String^ directory = Environment::GetFolderPath(Environment::SpecialFolder::Fonts);

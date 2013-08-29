@@ -30,5 +30,7 @@ namespace ManagedOTN
 
             // public properties
             property String^ FontDirectory;
+            property bool EnableWatermark;
+            property String^ WatermarkImagePath;
     };
 }
