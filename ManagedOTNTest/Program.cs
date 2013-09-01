@@ -13,7 +13,7 @@ namespace ManagedOTNTest
 
             // use a watermark image
             exporter.EnableWatermark = true;
-            exporter.WatermarkImagePath = @"C:\Users\Ryan\Pictures\oracle.png";
+            exporter.WatermarkImagePath = @"C:\Users\Ryan\Downloads\pdfstarwatermark.png";
 
             // convert the document
             if (!exporter.Convert(@"E:\Documents\Backup\foo.txt", @"c:\users\ryan\desktop\foo.pdf"))
