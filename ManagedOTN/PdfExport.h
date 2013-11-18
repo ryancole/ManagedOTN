@@ -12,16 +12,19 @@ namespace ManagedOTN
             int lastErrorCode;
 
             // private methods
+			bool Initialize();
+			bool DeInitialize();
             void ApplyOptions(int handle);
 
         public:
 
+			PdfExport();
+			~PdfExport();
+
             // public methods
             bool Convert(String^ source, String^ destination);
             bool RunExport(int handle);
-            bool Initialize();
             bool CloseExport(int handle);
-            bool DeInitialize();
             bool CloseDocument(int handle);
             int OpenExport(int handle, String^ path);
             int GetLastErrorCode();

@@ -5,11 +5,11 @@ using System.Runtime.InteropServices;
 // General Information about an assembly is controlled through the following 
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
-[assembly: AssemblyTitle("ManagedOTNTest")]
+[assembly: AssemblyTitle("ManagedOTN.Test")]
 [assembly: AssemblyDescription("")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("")]
-[assembly: AssemblyProduct("ManagedOTNTest")]
+[assembly: AssemblyProduct("ManagedOTN.Test")]
 [assembly: AssemblyCopyright("Copyright ©  2013")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
@@ -20,7 +20,7 @@ using System.Runtime.InteropServices;
 [assembly: ComVisible(false)]
 
 // The following GUID is for the ID of the typelib if this project is exposed to COM
-[assembly: Guid("4749b1e7-1514-4b3e-b165-886cf368be55")]
+[assembly: Guid("8c41c9c9-0151-4555-b746-a08c207822c5")]
 
 // Version information for an assembly consists of the following four values:
 //

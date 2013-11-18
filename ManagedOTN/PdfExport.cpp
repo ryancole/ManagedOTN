@@ -8,6 +8,8 @@ using namespace System::Runtime::InteropServices;
 
 namespace ManagedOTN
 {
+	#pragma region Private Methods
+
     bool PdfExport::Initialize()
     {
         this->lastErrorCode = DAInitEx(DATHREAD_INIT_NATIVETHREADS, OI_INIT_DEFAULT | OI_INIT_NOLOADOPTIONS | OI_INIT_NOSAVEOPTIONS);
@@ -27,6 +29,20 @@ namespace ManagedOTN
 
         return true;
     }
+
+	#pragma endregion
+
+	#pragma region Public Methods
+
+	PdfExport::PdfExport()
+	{
+		this->Initialize();
+	}
+
+	PdfExport::~PdfExport()
+	{
+		this->DeInitialize();
+	}
 
     bool PdfExport::CloseDocument(int handle)
     {
@@ -203,4 +219,6 @@ namespace ManagedOTN
 
         return gcnew String(buffer);
     }
+
+	#pragma endregion
 }
