@@ -9,12 +9,11 @@ Compiling ManagedOTN requires that you can link to the Outside In libraries, and
 ## Example
 
 ```csharp
-var exporter = new PdfExport();
+var temporary = Path.GetTempFileName();
 
-if (!exporter.Convert(@"foo.xls", @"foo.pdf"))
+using (var exporter = new PdfExport())
 {
-    int error = exporter.GetLastErrorCode();
-    Console.WriteLine(exporter.GetErrorMessage(error));
+    Assert.IsTrue(exporter.Convert(temporary, Path.ChangeExtension(temporary, "pdf")));
 }
 ```
 
