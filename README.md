@@ -13,7 +13,7 @@ var temporary = Path.GetTempFileName();
 
 using (var exporter = new PdfExport())
 {
-    Assert.IsTrue(exporter.Convert(temporary, Path.ChangeExtension(temporary, "pdf")));
+    exporter.Convert(temporary, Path.ChangeExtension(temporary, "pdf"));
 }
 ```
 
