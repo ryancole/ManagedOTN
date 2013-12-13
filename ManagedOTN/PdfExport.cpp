@@ -160,6 +160,7 @@ namespace ManagedOTN
 
 			DEFAULTPAGESIZE pageSize = {};
 
+			pageSize.wUnits = SCCGRAPHIC_INCHES;
 			pageSize.fWidth = this->PageWidth;
 			pageSize.fHeight = this->PageHeight;
 
