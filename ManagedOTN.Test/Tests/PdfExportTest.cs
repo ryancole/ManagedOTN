@@ -21,6 +21,21 @@ namespace ManagedOTN.Test
             }
         }
 
+        [TestMethod]
+        public void CanSetPageSize()
+        {
+            var temporary = Path.GetTempFileName();
+
+            using (var exporter = new PdfExport())
+            {
+                exporter.UseDefaultPageSettings = false;
+                exporter.PageWidth = 1;
+                exporter.PageHeight = 1;
+
+                Assert.IsTrue(exporter.Convert(temporary, Path.ChangeExtension(temporary, "pdf")));
+            }
+        }
+
         #endregion
     }
 }

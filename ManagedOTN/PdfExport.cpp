@@ -152,6 +152,21 @@ namespace ManagedOTN
 
     void PdfExport::ApplyOptions(int handle)
     {
+		// disable use default page settings
+		if (this->UseDefaultPageSettings == false)
+		{
+			bool toggle = false;
+			this->lastErrorCode = DASetOption(handle, SCCOPT_USEDOCPAGESETTINGS, &toggle, sizeof(bool));
+
+			DEFAULTPAGESIZE pageSize = {};
+
+			pageSize.fWidth = this->PageWidth;
+			pageSize.fHeight = this->PageHeight;
+
+			this->lastErrorCode = DASetOption(handle, SCCOPT_DEFAULTPAGESIZE, &pageSize, sizeof(DEFAULTPAGESIZE));
+		}
+
+		// watermark image
         if (this->EnableWatermark == true)
         {
             bool toggle = true;
@@ -185,6 +200,7 @@ namespace ManagedOTN
             this->lastErrorCode = DASetOption(handle, SCCOPT_ENABLEWATERMARK, &toggle, sizeof(bool));
         }
 
+		// font directory path
         if (this->FontDirectory == nullptr || this->FontDirectory->Length > 0)
         {
             String^ directory = Environment::GetFolderPath(Environment::SpecialFolder::Fonts);
